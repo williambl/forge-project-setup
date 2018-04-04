@@ -20,4 +20,8 @@ project_name = input("Project name\n> ")
 os.mkdir(project_name)
 os.chdir(project_name)
 
+download_zip = requests.get(url)
 
+with open("tmp.zip", 'wb') as fd:
+    for chunk in download_zip.iter_content(chunk_size=128):
+        fd.write(chunk)
