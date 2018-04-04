@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/forge-project-setup.iml" filepath="$PROJECT_DIR$/forge-project-setup.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/forge-project-setup_main.iml" filepath="$PROJECT_DIR$/.idea/modules/forge-project-setup_main.iml" group="forge-project-setup" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/forge-project-setup_test.iml" filepath="$PROJECT_DIR$/.idea/modules/forge-project-setup_test.iml" group="forge-project-setup" />
     </modules>
   </component>
 </project>
