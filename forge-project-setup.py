@@ -1,5 +1,6 @@
 import os
 import requests
+import zipfile
 
 forge_versions = requests.get("https://v1.meta.multimc.org/net.minecraftforge/")
 
@@ -25,3 +26,7 @@ download_zip = requests.get(url)
 with open("tmp.zip", 'wb') as fd:
     for chunk in download_zip.iter_content(chunk_size=128):
         fd.write(chunk)
+
+with zipfile.ZipFile("tmp.zip", 'r') as zip_file:
+    zip_file.extractall(".")
+    zip_file.close()
