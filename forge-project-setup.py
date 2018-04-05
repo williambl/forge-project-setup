@@ -11,6 +11,7 @@ def setup_arguments():
     parser.add_argument("-f", "--forge_version", help="Forge MDK version to download")
     parser.add_argument("-m", "--mc_version", help="Download the latest Forge MDK version which supports this Minecraft version. Ignored when -f is used")
     parser.add_argument("-g", "--create_git_repo", help="Initialise a git repository in the project folder", action="store_true")
+    parser.add_argument("-r", "--remove_unneeded_files", help="Remove unneeded txt files in project directory", action="store_true")
     return parser.parse_args()
 
 def get_forge_versions(): 
@@ -70,5 +71,5 @@ download_and_extract_mdk(version)
 
 if (args.create_git_repo):
     create_git_repo()
-
-delete_unneeded_files()
+if (args.remove_unneeded_files):
+    delete_unneeded_files()
