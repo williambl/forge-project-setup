@@ -40,17 +40,23 @@ def download_and_extract_mdk(version):
 def create_git_repo():
     assert Repo.init(".").__class__ is Repo
 
-def get_version_to_download(versions, forge_version):
-    if (forge_version == None):
-        return versions[0]
+def get_version_to_download(versions, args):
+    if (args.forge_version == None):
+        if (args.mc_version == None):
+            return versions[0]
+
+        for version in versions:
+            if (version["requires"][0]["equals"] == args.mc_version):
+                return version
+
     for version in versions:
-        if (version["version"] == forge_version):
+        if (version["version"] == args.forge_version):
             return version
 
 args = setup_arguments()
 
 versions = get_forge_versions()
-version = get_version_to_download(versions, args.forge_version)
+version = get_version_to_download(versions, args)
 
 os.mkdir(args.project_name)
 os.chdir(args.project_name)
