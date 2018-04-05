@@ -3,6 +3,7 @@ import requests
 import zipfile
 import argparse
 from git import Repo
+import glob
 
 def setup_arguments():
     parser = argparse.ArgumentParser()
@@ -53,6 +54,10 @@ def get_version_to_download(versions, args):
         if (version["version"] == args.forge_version):
             return version
 
+def delete_unneeded_files():
+    for file in glob.glob("./*.txt"):
+        os.remove(file)
+
 args = setup_arguments()
 
 versions = get_forge_versions()
@@ -65,3 +70,5 @@ download_and_extract_mdk(version)
 
 if (args.create_git_repo):
     create_git_repo()
+
+delete_unneeded_files()
