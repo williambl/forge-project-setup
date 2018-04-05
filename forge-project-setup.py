@@ -3,10 +3,15 @@ import requests
 import zipfile
 import argparse
 
-parser = argparse.ArgumentParser()
-parser.add_argument("project_name", help="name of the project to create")
-args = parser.parse_args()
-project_name = args.project_name
+def setup_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("project_name", help="Name of the project to create")
+    parser.add_argument("-V", "--forge_version", help="Forge mdk version to download")
+    parser.add_argument("-v", "--mc_version", help="Minecraft version to use. Ignored when -V is used")
+    args = parser.parse_args()
+    project_name = args.project_name
+
+setup_arguments()
 
 forge_versions = requests.get("https://v1.meta.multimc.org/net.minecraftforge/")
 
