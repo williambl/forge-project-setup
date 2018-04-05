@@ -12,6 +12,7 @@ def setup_arguments():
     parser.add_argument("-m", "--mc_version", help="Download the latest Forge MDK version which supports this Minecraft version. Ignored when -f is used")
     parser.add_argument("-g", "--create_git_repo", help="Initialise a git repository in the project folder", action="store_true")
     parser.add_argument("-r", "--remove_unneeded_files", help="Remove unneeded txt files in project directory", action="store_true")
+    parser.add_argument("-p", "--package_name", help="Package name for the mod")
     return parser.parse_args()
 
 def get_forge_versions(): 
@@ -59,6 +60,21 @@ def delete_unneeded_files():
     for file in glob.glob("./*.txt"):
         os.remove(file)
 
+def edit_build_file(package_name):
+    replace_in_file("com.yourname.modid", package_name, "build.gradle")
+
+def replace_in_file(find, replace, path):
+    # Read in the file
+    with open(path, 'r') as file :
+        filedata = file.read()
+
+    # Replace the target string
+    filedata = filedata.replace(find, replace)
+
+    # Write the file out again
+    with open(path, 'w') as file:
+        file.write(filedata)
+
 args = setup_arguments()
 
 versions = get_forge_versions()
@@ -73,3 +89,5 @@ if (args.create_git_repo):
     create_git_repo()
 if (args.remove_unneeded_files):
     delete_unneeded_files()
+if (args.package_name != None):
+    edit_build_file(args.package_name)
