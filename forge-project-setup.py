@@ -36,6 +36,7 @@ def download_and_extract_mdk(versions):
     with zipfile.ZipFile("tmp.zip", 'r') as zip_file:
         zip_file.extractall(".")
         zip_file.close()
+    os.remove("tmp.zip")
 
 def create_git_repo():
     assert Repo.init(".").__class__ is Repo
