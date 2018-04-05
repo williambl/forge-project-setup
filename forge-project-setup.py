@@ -7,8 +7,8 @@ from git import Repo
 def setup_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("project_name", help="Name of the project to create")
-    parser.add_argument("-V", "--forge_version", help="Forge mdk version to download")
-    parser.add_argument("-v", "--mc_version", help="Minecraft version to use. Ignored when -V is used")
+    parser.add_argument("-f", "--forge_version", help="Forge mdk version to download")
+    parser.add_argument("-m", "--mc_version", help="Minecraft version to use. Ignored when -V is used")
     parser.add_argument("-g", "--create_git_repo", help="Initialise a git repository in the project folder", action="store_true")
     return parser.parse_args()
 
