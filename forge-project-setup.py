@@ -1,6 +1,17 @@
 import os
 import requests
 import zipfile
+import argparse
+
+def setup_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("project_name", help="Name of the project to create")
+    parser.add_argument("-V", "--forge_version", help="Forge mdk version to download")
+    parser.add_argument("-v", "--mc_version", help="Minecraft version to use. Ignored when -V is used")
+    args = parser.parse_args()
+    project_name = args.project_name
+
+setup_arguments()
 
 forge_versions = requests.get("https://v1.meta.multimc.org/net.minecraftforge/")
 
@@ -17,7 +28,6 @@ latest_version_number = latest_version["version"]
 
 url = "http://files.minecraftforge.net/maven/net/minecraftforge/forge/"+latest_version_mc_version+"-"+latest_version_number+"/forge-"+latest_version_mc_version+"-"+latest_version_number+"-mdk.zip"
 
-project_name = input("Project name\n> ")
 os.mkdir(project_name)
 os.chdir(project_name)
 
