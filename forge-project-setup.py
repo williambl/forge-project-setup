@@ -21,12 +21,11 @@ def get_forge_versions():
         versions.append(version)
     return versions
 
-def download_and_extract_mdk(versions):
-    latest_version = versions[0]
-    latest_version_mc_version = latest_version["requires"][0]["equals"]
-    latest_version_number = latest_version["version"]
+def download_and_extract_mdk(version):
+    version_mc_version = version["requires"][0]["equals"]
+    version_number = version["version"]
 
-    url = "http://files.minecraftforge.net/maven/net/minecraftforge/forge/"+latest_version_mc_version+"-"+latest_version_number+"/forge-"+latest_version_mc_version+"-"+latest_version_number+"-mdk.zip"
+    url = "http://files.minecraftforge.net/maven/net/minecraftforge/forge/"+version_mc_version+"-"+version_number+"/forge-"+version_mc_version+"-"+version_number+"-mdk.zip"
     download_zip = requests.get(url)
 
     with open("tmp.zip", 'wb') as fd:
@@ -41,14 +40,22 @@ def download_and_extract_mdk(versions):
 def create_git_repo():
     assert Repo.init(".").__class__ is Repo
 
+def get_version_to_download(versions, forge_version):
+    if (forge_version == None):
+        return versions[0]
+    for version in versions:
+        if (version["version"] == forge_version):
+            return version
+
 args = setup_arguments()
 
 versions = get_forge_versions()
+version = get_version_to_download(versions, args.forge_version)
 
 os.mkdir(args.project_name)
 os.chdir(args.project_name)
 
-download_and_extract_mdk(versions)
+download_and_extract_mdk(version)
 
 if (args.create_git_repo):
     create_git_repo()
