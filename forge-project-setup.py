@@ -2,6 +2,7 @@ import os
 import requests
 import zipfile
 import argparse
+from git import Repo
 
 def setup_arguments():
     parser = argparse.ArgumentParser()
@@ -25,7 +26,6 @@ def download_and_extract_mdk(versions):
     latest_version_number = latest_version["version"]
 
     url = "http://files.minecraftforge.net/maven/net/minecraftforge/forge/"+latest_version_mc_version+"-"+latest_version_number+"/forge-"+latest_version_mc_version+"-"+latest_version_number+"-mdk.zip"
-
     download_zip = requests.get(url)
 
     with open("tmp.zip", 'wb') as fd:
@@ -36,6 +36,9 @@ def download_and_extract_mdk(versions):
         zip_file.extractall(".")
         zip_file.close()
 
+def create_git_repo():
+    assert Repo.init(".").__class__ is Repo
+
 args = setup_arguments()
 
 versions = get_forge_versions()
@@ -45,3 +48,4 @@ os.chdir(args.project_name)
 
 download_and_extract_mdk(versions)
 
+create_git_repo()
