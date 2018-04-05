@@ -4,6 +4,7 @@ import zipfile
 import argparse
 from git import Repo
 import glob
+import shutil
 
 def setup_arguments():
     parser = argparse.ArgumentParser()
@@ -60,8 +61,10 @@ def delete_unneeded_files():
     for file in glob.glob("./*.txt"):
         os.remove(file)
 
-def edit_build_file(package_name):
+def rename_package(package_name):
     replace_in_file("com.yourname.modid", package_name, "build.gradle")
+    shutil.rmtree("src/main/java/com")
+    os.makedirs("src/main/java/"+package_name.replace(".","/"))
 
 def replace_in_file(find, replace, path):
     # Read in the file
@@ -90,4 +93,4 @@ if (args.create_git_repo):
 if (args.remove_unneeded_files):
     delete_unneeded_files()
 if (args.package_name != None):
-    edit_build_file(args.package_name)
+    rename_package(args.package_name)
