@@ -6,6 +6,8 @@ Automatically downloads and extracts the mdk, and optionally:
  - adds your package name to build.gradle
  - initialises a git repo
 
+Does not work for minecraft versions < 1.7.10.
+
 ```ShellSession
 usage: forge-project-setup.py [-h] [-f FORGE_VERSION] [-m MC_VERSION] [-g]
                               [-r] [-p PACKAGE_NAME]
