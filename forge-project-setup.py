@@ -29,7 +29,11 @@ def download_and_extract_mdk(version):
     version_mc_version = version["requires"][0]["equals"]
     version_number = version["version"]
 
-    url = "http://files.minecraftforge.net/maven/net/minecraftforge/forge/"+version_mc_version+"-"+version_number+"/forge-"+version_mc_version+"-"+version_number+"-mdk.zip"
+    if (int(version_mc_version.split(".")[1]) > 7):
+        url_template = "http://files.minecraftforge.net/maven/net/minecraftforge/forge/{0}-{1}/forge-{0}-{1}-mdk.zip"
+    else:
+        url_template = "http://files.minecraftforge.net/maven/net/minecraftforge/forge/{0}-{1}/forge-{0}-{1}-src.zip"
+    url = url_template.format(version_mc_version, version_number)
     download_zip = requests.get(url)
 
     with open("tmp.zip", 'wb') as fd:
