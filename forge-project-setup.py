@@ -29,7 +29,9 @@ def download_and_extract_mdk(version):
     version_mc_version = version["requires"][0]["equals"]
     version_number = version["version"]
 
-    if (int(version_mc_version.split(".")[1]) > 7):
+    version_greater_than_1_7_0 = int(version_mc_version.split(".")[1]) > 7
+
+    if (version_greater_than_1_7_0):
         url_template = "http://files.minecraftforge.net/maven/net/minecraftforge/forge/{0}-{1}/forge-{0}-{1}-mdk.zip"
     else:
         url_template = "http://files.minecraftforge.net/maven/net/minecraftforge/forge/{0}-{1}/forge-{0}-{1}-src.zip"
@@ -44,6 +46,10 @@ def download_and_extract_mdk(version):
         zip_file.extractall(".")
         zip_file.close()
     os.remove("tmp.zip")
+
+    if (not version_greater_than_1_7_0):
+        for file in glob.glob("forge/*"):
+            shutil.move(file, ".")
 
 def create_git_repo():
     assert Repo.init(".").__class__ is Repo
