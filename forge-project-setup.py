@@ -68,7 +68,7 @@ def get_version_to_download(versions, args):
             return version
 
 def delete_unneeded_files():
-    for file in glob.glob("./*.txt"):
+    for file in glob.glob("./*.txt*"):
         os.remove(file)
 
 def rename_package(package_name):
