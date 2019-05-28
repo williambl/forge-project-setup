@@ -5,6 +5,8 @@ import argparse
 from git import Repo
 import glob
 import shutil
+import subprocess
+import stat
 
 def setup_arguments():
     parser = argparse.ArgumentParser()
@@ -15,6 +17,7 @@ def setup_arguments():
     parser.add_argument("-r", "--remove_unneeded_files", help="Remove unneeded txt files in project directory", action="store_true")
     parser.add_argument("-p", "--package_name", help="Package name for the mod")
     parser.add_argument("-n", "--no_download", help="Do not download mdk")
+    parser.add_argument("-t", "--gradle_tasks", help="Run gradle tasks", action="store_true")
     return parser.parse_args()
 
 def get_forge_versions():
@@ -101,6 +104,22 @@ def replace_in_file(find, replace, path):
     with open(path, 'w') as file:
         file.write(filedata)
 
+def run_gradle_tasks():
+    gradle_exec_name = ''
+
+    # Get correct executable name
+    if os.name == 'posix':
+        gradle_exec_name = './gradlew'
+    elif os.name == 'nt':
+        gradle_exec_name = 'gradlew.bat'
+
+    # On posix systems gradlew needs to have the executable bit set
+    if os.name == 'posix':
+        st = os.stat(gradle_exec_name)
+        os.chmod(gradle_exec_name, st.st_mode | stat.S_IEXEC)
+
+    subprocess.run([gradle_exec_name, 'setupDecompWorkspace'])
+
 args = setup_arguments()
 
 # Download forge version list and get work out which version to download
@@ -122,3 +141,5 @@ if (args.remove_unneeded_files):
     delete_unneeded_files()
 if (args.package_name != None):
     rename_package(args.package_name)
+if (args.gradle_tasks):
+    run_gradle_tasks()
