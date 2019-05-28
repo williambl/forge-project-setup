@@ -120,26 +120,27 @@ def run_gradle_tasks():
 
     subprocess.run([gradle_exec_name, 'setupDecompWorkspace'])
 
-args = setup_arguments()
+if __name__ == "__main__":
+    args = setup_arguments()
 
-# Download forge version list and get work out which version to download
-versions = get_forge_versions()
-version = get_version_to_download(versions, args)
+    # Download forge version list and get work out which version to download
+    versions = get_forge_versions()
+    version = get_version_to_download(versions, args)
 
-# Create and cd into the project directory
-os.mkdir(args.project_name)
-os.chdir(args.project_name)
+    # Create and cd into the project directory
+    os.mkdir(args.project_name)
+    os.chdir(args.project_name)
 
-# Download and extract the mdk
-if (not args.no_download):
-    download_and_extract_mdk(version)
+    # Download and extract the mdk
+    if (not args.no_download):
+        download_and_extract_mdk(version)
 
-# Do the optional things
-if (args.create_git_repo):
-    create_git_repo()
-if (args.remove_unneeded_files):
-    delete_unneeded_files()
-if (args.package_name != None):
-    rename_package(args.package_name)
-if (args.gradle_tasks):
-    run_gradle_tasks()
+    # Do the optional things
+    if (args.create_git_repo):
+        create_git_repo()
+    if (args.remove_unneeded_files):
+        delete_unneeded_files()
+    if (args.package_name != None):
+        rename_package(args.package_name)
+    if (args.gradle_tasks):
+        run_gradle_tasks()
