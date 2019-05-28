@@ -14,6 +14,7 @@ def setup_arguments():
     parser.add_argument("-g", "--create_git_repo", help="Initialise a git repository in the project folder", action="store_true")
     parser.add_argument("-r", "--remove_unneeded_files", help="Remove unneeded txt files in project directory", action="store_true")
     parser.add_argument("-p", "--package_name", help="Package name for the mod")
+    parser.add_argument("-n", "--no_download", help="Do not download mdk")
     return parser.parse_args()
 
 def get_forge_versions():
@@ -111,7 +112,8 @@ os.mkdir(args.project_name)
 os.chdir(args.project_name)
 
 # Download and extract the mdk
-download_and_extract_mdk(version)
+if (not args.no_download):
+    download_and_extract_mdk(version)
 
 # Do the optional things
 if (args.create_git_repo):
