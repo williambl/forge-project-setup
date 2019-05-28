@@ -22,6 +22,7 @@ def setup_arguments():
 
 def get_forge_versions():
     # Using the multimc metadata server
+    print("Getting forge versions from multimc metadata server...")
     forge_versions = requests.get("https://v1.meta.multimc.org/net.minecraftforge/")
     versions_json = forge_versions.json()
 
@@ -44,6 +45,7 @@ def download_and_extract_mdk(version):
     else:
         url_template = "http://files.minecraftforge.net/maven/net/minecraftforge/forge/{0}-{1}/forge-{0}-{1}-src.zip"
     url = url_template.format(version_mc_version, version_number)
+    print("Downloading mdk...")
     download_zip = requests.get(url)
 
     # And write it to the file
@@ -52,6 +54,7 @@ def download_and_extract_mdk(version):
             fd.write(chunk)
 
     # Then unzip and remove the zip file
+    print("Extracting mdk...")
     with zipfile.ZipFile("tmp.zip", 'r') as zip_file:
         zip_file.extractall(".")
         zip_file.close()
@@ -63,30 +66,37 @@ def download_and_extract_mdk(version):
             shutil.move(file, ".")
 
 def create_git_repo():
+    print("Creating git repo...")
     assert Repo.init(".").__class__ is Repo
 
 def get_version_to_download(versions, args):
+    print("Selecting forge version...")
     # If no version specified, grab the latest forge
     if (args.forge_version == None):
         if (args.mc_version == None):
+            print("No version specified, selecting "+versions[0]["version"]+".")
             return versions[0]
 
         # If mc version specified, grab the latest forge that supports it
         for version in versions:
             if (version["requires"][0]["equals"] == args.mc_version):
+                print("Selecting version "+version["version"]+".")
                 return version
 
     # If forge version specified, use it
     for version in versions:
         if (version["version"] == args.forge_version):
+            print("Selecting version"+version["version"]+".")
             return version
 
 def delete_unneeded_files():
+    print("Deleting unneeded text files...")
     # A lot of unneeded txt files are made
     for file in glob.glob("./*.txt*"):
         os.remove(file)
 
 def rename_package(package_name):
+    print("Setting package name to "+package_name+"...")
     # Replace the example packages with the specified one
     replace_in_file("com.yourname.modid", package_name, "build.gradle")
     shutil.rmtree("src/main/java/com")
@@ -105,6 +115,7 @@ def replace_in_file(find, replace, path):
         file.write(filedata)
 
 def run_gradle_tasks():
+    print("Running gradle tasks...")
     gradle_exec_name = ''
 
     # Get correct executable name
@@ -144,3 +155,7 @@ if __name__ == "__main__":
         rename_package(args.package_name)
     if (args.gradle_tasks):
         run_gradle_tasks()
+
+    print("Done!")
+    if (not args.no_download):
+        print("Please consider supporting Forge development by downloading Forge from https://files.minecraftforge.net/ and using the -n option in this tool, or by supporting LexManos on patreon at https://www.patreon.com/LexManos")
