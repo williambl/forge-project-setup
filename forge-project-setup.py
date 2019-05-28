@@ -16,7 +16,7 @@ def setup_arguments():
     parser.add_argument("-g", "--create_git_repo", help="Initialise a git repository in the project folder", action="store_true")
     parser.add_argument("-r", "--remove_unneeded_files", help="Remove unneeded txt files in project directory", action="store_true")
     parser.add_argument("-p", "--package_name", help="Package name for the mod")
-    parser.add_argument("-n", "--no_download", help="Do not download mdk")
+    parser.add_argument("-n", "--no_download", help="Do not download mdk", action="store_true")
     parser.add_argument("-t", "--gradle_tasks", help="Run gradle tasks", action="store_true")
     return parser.parse_args()
 
